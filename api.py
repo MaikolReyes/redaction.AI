@@ -15,7 +15,7 @@ app = FastAPI()
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["redactionai.netlify.app"],  # Cambia esto al dominio de tu frontend en producción
+    allow_origins=["https://redactionai.netlify.app/"],  # Cambia esto al dominio de tu frontend en producción
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
