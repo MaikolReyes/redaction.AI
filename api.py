@@ -26,14 +26,13 @@ app.add_middleware(
 )
 
 class ReescribirRequest(BaseModel):
-    texto: str
-    estilo: str
+    texto: strQ
 
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
     print(request) 
     messages = [
-        {"role": "system", "content": f"Eres un asistente que reescribe artículos con el estilo {request.estilo}."},
+        {"role": "system", "content": "Eres un asistente argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Si los articulos son en ingles tu los traduces al español."},
         {"role": "user", "content": request.texto}
     ]
     try:
