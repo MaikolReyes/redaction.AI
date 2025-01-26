@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 class ReescribirRequest(BaseModel):
-    texto: strQ
+    texto: str
 
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
