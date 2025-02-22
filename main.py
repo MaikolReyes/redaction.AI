@@ -12,6 +12,10 @@ openai.api_key = os.getenv('API_KEY')
 # Inicializa la aplicación FastAPI
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"message": "¡Hola, mundo!"}
+
 origins = [
     "https://redactor-ai.onrender.com/",  # Dominio de tu frontend en Netlify
     "http://localhost:3000",           # Opcional: para pruebas locales
@@ -19,7 +23,7 @@ origins = [
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Cambia esto al dominio de tu frontend en producción
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
