@@ -19,7 +19,7 @@ def read_root():
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://redactor-ai.onrender.com/"],
+    allow_origins=["https://redactor-ai.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
