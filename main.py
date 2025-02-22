@@ -45,8 +45,15 @@ async def reescribir_articulo(request: ReescribirRequest):
         # Usando el endpoint correcto para el modelo de chat
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
-            messages=messages,
-            max_tokens=1000,
+            messages=messages_es,
+            max_tokens=700,
+            temperature=0.7
+        )
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
+            messages=messages_en,
+            max_tokens=700,
             temperature=0.7
         )
 # Manejo seguro de la respuesta
