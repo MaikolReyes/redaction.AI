@@ -21,7 +21,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://redactor-ai.onrender.com"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],  # Asegura que OPTIONS está permitido
     allow_headers=["*"],
 )
 
