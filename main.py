@@ -16,14 +16,10 @@ app = FastAPI()
 def read_root():
     return {"message": "¡Hola, mundo!"}
 
-origins = [
-    "https://redactor-ai.onrender.com/",  # Dominio de tu frontend en Netlify
-    "http://localhost:3000",           # Opcional: para pruebas locales
-]
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["https://redactor-ai.onrender.com/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
