@@ -33,12 +33,12 @@ async def reescribir_articulo(request: ReescribirRequest):
     print(request) 
     
     messages_es = [
-        {"role": "system", "content": "Eres un redactor argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Todo el contenido damelo bien estructurado y con un lenguaje claro y preciso. (que cada parrafo tenga una idea central y que se entienda bien y este separado por un espacio en blanco)"},
+        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde solo en español, sin inglés y si te escribo en inglés, debes traducirlo al español."},
         {"role": "user", "content": request.texto}
     ]
     
     messages_en = [
-        {"role": "system", "content": "You are a professional writer who rewrites articles about financial news, economy, technology, and cryptocurrencies, with over 10 years of experience. Provide all content well-structured, with clear and precise language. Each paragraph should have a central idea, be easy to understand, and be separated by a blank space). Respond only in English, no Spanish and if I write to you in Spanish, you should translate it to English."},
+        {"role": "system", "content": "Please rewrite the following article in a completely original way while maintaining the same meaning and key points. Ensure that the structure of the content is changed, and use different wording and phrasing. Include relevant examples and insights that are not present in the original text. The goal is to make the rewritten version unique, avoiding plagiarism, while still conveying the same message. Respond only in English, no Spanish and if I write to you in Spanish, you should translate it to English."},
         {"role": "user", "content": request.texto}
     ]
     
