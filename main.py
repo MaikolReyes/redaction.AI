@@ -41,8 +41,9 @@ async def reescribir_articulo(request: ReescribirRequest):
         {"role": "system", "content": "You are a professional writer who rewrites articles about financial news, economy, technology, and cryptocurrencies, with over 10 years of experience. Provide all content well-structured, with clear and precise language. Each paragraph should have a central idea, be easy to understand, and be separated by a blank space)"},
         {"role": "user", "content": request.texto}
     ]
+    
     try:
-        # Usando el endpoint correcto para el modelo de chat
+        # Solicitar respuesta en español
         response_es = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_es,
@@ -50,15 +51,17 @@ async def reescribir_articulo(request: ReescribirRequest):
             temperature=0.7
         )
         
+        # Solicitar respuesta en inglés
         response_en = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_en,
             max_tokens=700,
             temperature=0.7
         )
-# Manejo seguro de la respuesta
-        content_es = response_es["choices"][0]["message"]["content"].strip() if response_es.get("choices") else "Error en la respuesta en español."
-        content_en = response_en["choices"][0]["message"]["content"].strip() if response_en.get("choices") else "Error in the English response."
+
+        # Comprobamos que ambas respuestas tienen contenido
+        content_es = response_es["choices"][0]["message"]["content"].strip() if "choices" in response_es and len(response_es["choices"]) > 0 else "Error en la respuesta en español."
+        content_en = response_en["choices"][0]["message"]["content"].strip() if "choices" in response_en and len(response_en["choices"]) > 0 else "Error in the English response."
 
         return {"resultado_es": content_es, "resultado_en": content_en}
 
