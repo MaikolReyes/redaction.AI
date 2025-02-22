@@ -31,8 +31,14 @@ class ReescribirRequest(BaseModel):
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
     print(request) 
-    messages = [
-        {"role": "system", "content": "Eres un asistente argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Todo el contenido damelo bien estructurado y con un lenguaje claro y preciso. (que cada parrafo tenga una idea central y que se entienda bien y este separado por un espacio en blanco)"},
+    
+    messages_es = [
+        {"role": "system", "content": "Eres un redactor argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Todo el contenido damelo bien estructurado y con un lenguaje claro y preciso. (que cada parrafo tenga una idea central y que se entienda bien y este separado por un espacio en blanco)"},
+        {"role": "user", "content": request.texto}
+    ]
+    
+    messages_en = [
+        {"role": "system", "content": "You are a professional writer who rewrites articles about financial news, economy, technology, and cryptocurrencies, with over 10 years of experience. Provide all content well-structured, with clear and precise language. Each paragraph should have a central idea, be easy to understand, and be separated by a blank space)"},
         {"role": "user", "content": request.texto}
     ]
     try:
@@ -44,10 +50,10 @@ async def reescribir_articulo(request: ReescribirRequest):
             temperature=0.7
         )
 # Manejo seguro de la respuesta
-        if response.get("choices") and len(response["choices"]) > 0:
-            content = response["choices"][0]["message"]["content"].strip()
-            return {"resultado": content}
-        else:
-            return {"error": "La API no generó una respuesta válida."}
+        content_es = response_es["choices"][0]["message"]["content"].strip() if response_es.get("choices") else "Error en la respuesta en español."
+        content_en = response_en["choices"][0]["message"]["content"].strip() if response_en.get("choices") else "Error in the English response."
+
+        return {"resultado_es": content_es, "resultado_en": content_en}
+
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
