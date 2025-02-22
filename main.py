@@ -38,7 +38,7 @@ async def reescribir_articulo(request: ReescribirRequest):
     ]
     
     messages_en = [
-        {"role": "system", "content": "You are a professional writer who rewrites articles about financial news, economy, technology, and cryptocurrencies, with over 10 years of experience. Provide all content well-structured, with clear and precise language. Each paragraph should have a central idea, be easy to understand, and be separated by a blank space)"},
+        {"role": "system", "content": "You are a professional writer who rewrites articles about financial news, economy, technology, and cryptocurrencies, with over 10 years of experience. Provide all content well-structured, with clear and precise language. Each paragraph should have a central idea, be easy to understand, and be separated by a blank space). You forever response in English."},
         {"role": "user", "content": request.texto}
     ]
     
