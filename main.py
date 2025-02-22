@@ -13,7 +13,7 @@ openai.api_key = os.getenv('API_KEY')
 app = FastAPI()
 
 origins = [
-    "https://redactionai.netlify.app",  # Dominio de tu frontend en Netlify
+    "https://redactor-ai.onrender.com/",  # Dominio de tu frontend en Netlify
     "http://localhost:3000",           # Opcional: para pruebas locales
 ]
 # Configuración de CORS
@@ -32,7 +32,7 @@ class ReescribirRequest(BaseModel):
 async def reescribir_articulo(request: ReescribirRequest):
     print(request) 
     messages = [
-        {"role": "system", "content": "Eres un asistente argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Si los articulos son en ingles tu los traduces al español."},
+        {"role": "system", "content": "Eres un asistente argentino que reescribe artículos sobre noticias de finanzas, economia, tecnologia y criptomonedas con un estilo profesional y tienes mas de 10 años de experiencia. Todo el contenido damelo bien estructurado y con un lenguaje claro y preciso. (que cada parrafo tenga una idea central y que se entienda bien y este separado por un espacio en blanco)"},
         {"role": "user", "content": request.texto}
     ]
     try:
