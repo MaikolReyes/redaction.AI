@@ -43,14 +43,14 @@ async def reescribir_articulo(request: ReescribirRequest):
     ]
     try:
         # Usando el endpoint correcto para el modelo de chat
-        response = openai.ChatCompletion.create(
+        response_es = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_es,
             max_tokens=700,
             temperature=0.7
         )
         
-        response = openai.ChatCompletion.create(
+        response_en = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_en,
             max_tokens=700,
