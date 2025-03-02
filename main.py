@@ -33,12 +33,12 @@ async def reescribir_articulo(request: ReescribirRequest):
     print(request) 
     
     messages_es = [
-        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde solo en español, sin inglés y si te escribo en inglés, debes traducirlo al español."},
+        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde solo en español, sin inglés y si te escribo en inglés, debes traducirlo al español. (Dame siempre mas de 1000 palabras)"},
         {"role": "user", "content": request.texto}
     ]
     
     messages_en = [
-        {"role": "system", "content": "Please rewrite the following article in a completely original way while maintaining the same meaning and key points. Ensure that the structure of the content is changed, and use different wording and phrasing. Include relevant examples and insights that are not present in the original text. The goal is to make the rewritten version unique, avoiding plagiarism, while still conveying the same message. Respond only in English, no Spanish and if I write to you in Spanish, you should translate it to English."},
+        {"role": "system", "content": "Please rewrite the following article in a completely original way while maintaining the same meaning and key points. Ensure that the structure of the content is changed, and use different wording and phrasing. Include relevant examples and insights that are not present in the original text. The goal is to make the rewritten version unique, avoiding plagiarism, while still conveying the same message. Respond only in English, no Spanish and if I write to you in Spanish, you should translate it to English.(Always give me more than 1000 words.)"},
         {"role": "user", "content": request.texto}
     ]
     
@@ -47,7 +47,7 @@ async def reescribir_articulo(request: ReescribirRequest):
         response_es = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_es,
-            max_tokens=700,
+            max_tokens=1000,
             temperature=0.7
         )
         
@@ -55,7 +55,7 @@ async def reescribir_articulo(request: ReescribirRequest):
         response_en = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_en,
-            max_tokens=700,
+            max_tokens=1000,
             temperature=0.7
         )
 
