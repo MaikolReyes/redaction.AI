@@ -47,7 +47,7 @@ async def reescribir_articulo(request: ReescribirRequest):
         response_es = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_es,
-            max_tokens=1000,
+            max_tokens=2000,
             temperature=0.7
         )
         
@@ -55,7 +55,7 @@ async def reescribir_articulo(request: ReescribirRequest):
         response_en = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages_en,
-            max_tokens=1000,
+            max_tokens=2000,
             temperature=0.7
         )
 
