@@ -32,7 +32,7 @@ class ReescribirRequest(BaseModel):
 async def reescribir_articulo(request: ReescribirRequest):
     
     messages = [
-        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde en espanol y tambien dame una version del mismo texto traducido al ingles (Dame siempre mas de 1000 palabras)"},
+        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde en espanol y tambien dame una version del mismo texto traducido al ingles (Dame siempre mas de 1000 palabras). En la traduccion al ingles has un salto de 2 lineas para poder diferenciar los textos."},
         {"role": "user", "content": request.texto}
     ]
     
