@@ -30,40 +30,26 @@ class ReescribirRequest(BaseModel):
 
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
-    print(request) 
     
-    messages_es = [
-        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde solo en español, sin inglés y si te escribo en inglés, debes traducirlo al español. (Dame siempre mas de 1000 palabras)"},
-        {"role": "user", "content": request.texto}
-    ]
-    
-    messages_en = [
-        {"role": "system", "content": "Please rewrite the following article in a completely original way while maintaining the same meaning and key points. Ensure that the structure of the content is changed, and use different wording and phrasing. Include relevant examples and insights that are not present in the original text. The goal is to make the rewritten version unique, avoiding plagiarism, while still conveying the same message. Respond only in English, no Spanish and if I write to you in Spanish, you should translate it to English.(Always give me more than 1000 words.)"},
+    messages = [
+        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde en espanol y tambien dame una version del mismo texto traducido al ingles (Dame siempre mas de 1000 palabras)"},
         {"role": "user", "content": request.texto}
     ]
     
     try:
         # Solicitar respuesta en español
-        response_es = openai.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
-            messages=messages_es,
-            max_tokens=2000,
+            messages=messages,
+            max_tokens=4000,
             temperature=0.7
         )
         
-        # Solicitar respuesta en inglés
-        response_en = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
-            messages=messages_en,
-            max_tokens=2000,
-            temperature=0.7
-        )
 
         # Comprobamos que ambas respuestas tienen contenido
-        content_es = response_es["choices"][0]["message"]["content"].strip() if "choices" in response_es and len(response_es["choices"]) > 0 else "Error en la respuesta en español."
-        content_en = response_en["choices"][0]["message"]["content"].strip() if "choices" in response_en and len(response_en["choices"]) > 0 else "Error in the English response."
+        content = response["choices"][0]["message"]["content"].strip() if "choices" in response and len(response["choices"]) > 0 else "Error en la respuesta en español."
 
-        return {"resultado_es": content_es, "resultado_en": content_en}
+        return {"resultado": content,}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
