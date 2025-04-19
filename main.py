@@ -41,7 +41,6 @@ async def reescribir_articulo(request: ReescribirRequest):
         response = openai.ChatCompletion.create(
             model="o3-mini",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages,
-            temperature=0.7
         )
         
 
