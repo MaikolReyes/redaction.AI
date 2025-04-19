@@ -32,16 +32,15 @@ class ReescribirRequest(BaseModel):
 async def reescribir_articulo(request: ReescribirRequest):
     
     messages = [
-        {"role": "system", "content": "Por favor, reescribe el siguiente artículo de manera completamente original, manteniendo el mismo significado y los puntos clave. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Responde en espanol y tambien dame una version del mismo texto traducido al ingles (Dame siempre mas de 1000 palabras). En la traduccion al ingles has un salto de 2 lineas para poder diferenciar los textos."},
+        {"role": "system", "content": "Por favor, reescribe por completo el siguiente artículo de manera original, manteniendo el mismo significado y los puntos clave pero cambiando todas las palabras. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Es necesario que el articulo este perfectamente redactada y google no lo tome como contenido de bajo valor."},
         {"role": "user", "content": request.texto}
     ]
     
     try:
         # Solicitar respuesta en español
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Modelo GPT-3.5 o GPT-4 según prefieras
+            model="o3-mini",  # Modelo GPT-3.5 o GPT-4 según prefieras
             messages=messages,
-            max_tokens=4000,
             temperature=0.7
         )
         
