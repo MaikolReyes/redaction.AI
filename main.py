@@ -16,6 +16,17 @@ app = FastAPI()
 def read_root():
     return {"message": "¡Hola, mundo!"}
 
+
+class ReescribirRequest(BaseModel):
+    texto: str
+
+
+class TraducirRequest(BaseModel):
+    texto: str
+
+
+class ImagenRequest(BaseModel):
+    prompt: str
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
@@ -25,11 +36,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class ReescribirRequest(BaseModel):
-    texto: str
-
-class TraducirRequest(BaseModel):
-    texto: str
 
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
@@ -52,7 +58,7 @@ async def reescribir_articulo(request: ReescribirRequest):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=messages,
         )
 
@@ -77,7 +83,7 @@ async def traducir_texto(request: TraducirRequest):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=messages,
         )
 
@@ -91,3 +97,20 @@ async def traducir_texto(request: TraducirRequest):
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
+    
+@app.post("/create-image")
+async def crear_imagen(request: ImagenRequest):
+    try:
+        response = openai.Image.create(
+            model="dall-e-3",
+            prompt=request.texto,
+            n=1,
+            size="1024x1024",
+            response_format="url"
+        )
+
+        image_url = response["data"][0]["url"]
+        return {"imagen": image_url}
+
+    except Exception as e:
+        return {"error": f"Error al generar la imagen: {str(e)}"}
