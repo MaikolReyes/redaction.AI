@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from dotenv import load_dotenv
+from fastapi import FastAPI # type: ignore
+from dotenv import load_dotenv # type: ignore
 import os
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware # type: ignore
+from pydantic import BaseModel # type: ignore
 import openai
 
 load_dotenv()
@@ -28,26 +28,66 @@ app.add_middleware(
 class ReescribirRequest(BaseModel):
     texto: str
 
+class TraducirRequest(BaseModel):
+    texto: str
+
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
-    
     messages = [
-        {"role": "system", "content": "Por favor, reescribe por completo el siguiente artículo de manera original, manteniendo el mismo significado y los puntos clave pero cambiando todas las palabras. Asegúrate de cambiar la estructura del contenido y usar un vocabulario y frases diferentes. Incluye ejemplos relevantes e ideas que no estén presentes en el texto original. El objetivo es hacer que la versión reescrita sea única, evitando el plagio, mientras se transmite el mismo mensaje. Es necesario que el articulo este perfectamente redactada y google no lo tome como contenido de bajo valor."},
-        {"role": "user", "content": request.texto}
+        {
+            "role": "system",
+            "content": (
+                "Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, "
+                "manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas, "
+                "mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. "
+                "Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes "
+                "que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. "
+                "El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario "
+                "y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). "
+                "No menciones que se trata de una reescritura."
+            ),
+        },
+        {"role": "user", "content": request.texto},
     ]
-    
+
     try:
-        # Solicitar respuesta en español
         response = openai.ChatCompletion.create(
-            model="o3-mini",  # Modelo GPT-3.5 o GPT-4 según prefieras
+            model="gpt-4",
             messages=messages,
         )
-        
 
-        # Comprobamos que ambas respuestas tienen contenido
-        content = response["choices"][0]["message"]["content"].strip() if "choices" in response and len(response["choices"]) > 0 else "Error en la respuesta en español."
+        content = (
+            response["choices"][0]["message"]["content"].strip()
+            if "choices" in response and len(response["choices"]) > 0
+            else "Error en la respuesta en español."
+        )
 
-        return {"resultado": content,}
+        return {"resultado": content}
+
+    except Exception as e:
+        return {"error": f"Error en la API: {str(e)}"}
+
+
+@app.post("/traducir")
+async def traducir_texto(request: TraducirRequest):
+    messages = [
+        {"role": "system", "content": "Por favor, traduce el siguiente texto al inglés de forma clara y precisa, manteniendo el mismo texto pero solo traducido al ingles."},
+        {"role": "user", "content": request.texto},
+    ]
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=messages,
+        )
+
+        content = (
+            response["choices"][0]["message"]["content"].strip()
+            if "choices" in response and len(response["choices"]) > 0
+            else "Error en la respuesta de traducción."
+        )
+
+        return {"resultado": content}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
