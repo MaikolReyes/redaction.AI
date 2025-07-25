@@ -20,13 +20,12 @@ def read_root():
 class ReescribirRequest(BaseModel):
     texto: str
 
-
 class TraducirRequest(BaseModel):
     texto: str
 
-
 class ImagenRequest(BaseModel):
     prompt: str
+    
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
@@ -103,7 +102,7 @@ async def crear_imagen(request: ImagenRequest):
     try:
         response = openai.Image.create(
             model="dall-e-3",
-            prompt=request.texto,
+            prompt=request.prompt,
             n=1,
             size="1024x1024",
             response_format="url"
