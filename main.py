@@ -16,7 +16,6 @@ app = FastAPI()
 def read_root():
     return {"message": "¡Hola, mundo!"}
 
-
 class ReescribirRequest(BaseModel):
     texto: str
 
@@ -38,18 +37,36 @@ app.add_middleware(
 
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
+    
+    titles = [
+    {
+        "role": "system",
+        "content": ( 
+            ''' 
+            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    ]
+    
+    title_response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=titles,
+        )
+
+    titles = title_response["choices"][0]["message"]["content"].strip()
+    
     messages = [
         {
             "role": "system",
             "content": (
-                "Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, "
-                "manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas, "
-                "mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. "
-                "Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes "
-                "que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. "
-                "El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario "
-                "y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). "
-                "No menciones que se trata de una reescritura."
+                '''
+                Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas,
+                mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes 
+                que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario
+                y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). No menciones que se trata de una reescritura o menciones fuentes de la informacion.
+                '''
             ),
         },
         {"role": "user", "content": request.texto},
@@ -67,7 +84,7 @@ async def reescribir_articulo(request: ReescribirRequest):
             else "Error en la respuesta en español."
         )
 
-        return {"resultado": content}
+        return {"resultado": content, "titulos": titles}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
@@ -75,6 +92,26 @@ async def reescribir_articulo(request: ReescribirRequest):
 
 @app.post("/traducir")
 async def traducir_texto(request: TraducirRequest):
+    
+    titles_en = [
+    {
+        "role": "system",
+        "content": ( 
+            ''' 
+            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo en ingles.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    ]
+    
+    title_response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=titles_en,
+        )
+
+    titles_en = title_response["choices"][0]["message"]["content"].strip()
+    
     messages = [
         {"role": "system", "content": "Por favor, traduce el siguiente texto al inglés de forma clara y precisa, manteniendo el mismo texto pero solo traducido al ingles."},
         {"role": "user", "content": request.texto},
@@ -92,24 +129,24 @@ async def traducir_texto(request: TraducirRequest):
             else "Error en la respuesta de traducción."
         )
 
-        return {"resultado": content}
+        return {"resultado": content, "titles_en": titles_en}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
     
-@app.post("/create-image")
-async def crear_imagen(request: ImagenRequest):
-    try:
-        response = openai.Image.create(
-            model="dall-e-3",
-            prompt=request.prompt,
-            n=1,
-            size="1024x1024",
-            response_format="url"
-        )
+# @app.post("/create-image")
+# async def crear_imagen(request: ImagenRequest):
+#     try:
+#         response = openai.Image.create(
+#             model="dall-e-3",
+#             prompt=request.prompt,
+#             n=1,
+#             size="1024x1024",
+#             response_format="url"
+#         )
 
-        image_url = response["data"][0]["url"]
-        return {"imagen": image_url}
+#         image_url = response["data"][0]["url"]
+#         return {"imagen": image_url}
 
-    except Exception as e:
-        return {"error": f"Error al generar la imagen: {str(e)}"}
+#     except Exception as e:
+#         return {"error": f"Error al generar la imagen: {str(e)}"}
