@@ -21,7 +21,7 @@ class ReescribirRequest(BaseModel):
 
 class TraducirRequest(BaseModel):
     texto: str
-    titulos_en: str
+    titles_en: str
 
 class ImagenRequest(BaseModel):
     prompt: str
@@ -102,7 +102,7 @@ async def traducir_texto(request: TraducirRequest):
     titles_en = [
     {
         "role": "system",
-        "content": f"Traduce estas 3 opciones de títulos al inglés:\n{request.titulos_en}"
+        "content": f"Traduce estas 3 opciones de títulos al inglés:\n{request.titles_en}"
     },
     {"role": "user", "content": request.texto},
     ]
