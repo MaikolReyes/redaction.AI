@@ -21,6 +21,7 @@ class ReescribirRequest(BaseModel):
 
 class TraducirRequest(BaseModel):
     texto: str
+    titulos_en: str
 
 class ImagenRequest(BaseModel):
     prompt: str
@@ -42,9 +43,14 @@ async def reescribir_articulo(request: ReescribirRequest):
     {
         "role": "system",
         "content": ( 
-            ''' 
-            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo.
-            '''
+            """A partir del siguiente artículo de noticias, generá 3 títulos diferentes. 
+            Uno debe ser llamativo y captar la atención del lector, 
+            otro debe sonar profesional y formal como si fuera para un medio serio, 
+            y el tercero debe ser breve pero claro y descriptivo. 
+            Evitá repetir las mismas palabras entre los títulos.
+            
+            Titulo:
+"""
         )
     },
     {"role": "user", "content": request.texto},
@@ -61,12 +67,12 @@ async def reescribir_articulo(request: ReescribirRequest):
         {
             "role": "system",
             "content": (
-                '''
+                """
                 Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas,
                 mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes 
                 que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario
                 y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). No menciones que se trata de una reescritura o menciones fuentes de la informacion.
-                '''
+                """
             ),
         },
         {"role": "user", "content": request.texto},
@@ -96,11 +102,7 @@ async def traducir_texto(request: TraducirRequest):
     titles_en = [
     {
         "role": "system",
-        "content": ( 
-            ''' 
-            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo en ingles.
-            '''
-        )
+        "content": f"Traduce estas 3 opciones de títulos al inglés:\n{request.titulos_en}"
     },
     {"role": "user", "content": request.texto},
     ]
