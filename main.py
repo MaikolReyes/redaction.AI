@@ -22,6 +22,7 @@ class ReescribirRequest(BaseModel):
 class TraducirRequest(BaseModel):
     texto: str
     titulos: str
+    resumen: str
 
 class ImagenRequest(BaseModel):
     prompt: str
@@ -49,8 +50,9 @@ async def reescribir_articulo(request: ReescribirRequest):
             y el tercero debe ser breve pero claro y descriptivo. 
             Evitá repetir las mismas palabras entre los títulos.
             
-            Titulo:
-"""
+            Devuelve solo los títulos, sin texto adicional, sin encabezados ni espacios extra.
+            Solo listalos separados por saltos de línea.
+            """
         )
     },
     {"role": "user", "content": request.texto},
@@ -62,6 +64,26 @@ async def reescribir_articulo(request: ReescribirRequest):
         )
 
     titles = title_response["choices"][0]["message"]["content"].strip()
+    
+    resumen = [
+    {
+        "role": "system",
+        "content": ( 
+            f"""A partir del siguiente artículo de noticias {request.texto}, generá 5 puntos resumiendo la noticia con los puntos mas importantes.
+            Devuelve solo los puntos, sin texto adicional, sin encabezados ni espacios extra.
+            Solo listalos separados por saltos de línea.
+            """
+        )
+    },
+    {"role": "user", "content": request.texto},
+    ]
+    
+    resumen_response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resumen,
+        )
+
+    resumen = resumen_response["choices"][0]["message"]["content"].strip()
     
     messages = [
         {
@@ -90,7 +112,7 @@ async def reescribir_articulo(request: ReescribirRequest):
             else "Error en la respuesta en español."
         )
 
-        return {"resultado": content, "titulos": titles}
+        return {"resultado": content, "titulos": titles, "resumen": resumen}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
@@ -119,6 +141,26 @@ async def traducir_texto(request: TraducirRequest):
 
     titles_en = title_response["choices"][0]["message"]["content"].strip()
     
+    resumen_en = [
+    {
+        "role": "system",
+        "content": ( 
+            f"""Traduce este resumen de 5 puntos donde se resume la noticia al inglés: {request.resumen}
+            Devuelve solo los puntos, sin texto adicional, sin encabezados ni espacios extra.
+            Solo listalos separados por saltos de línea.
+            """
+        )
+    },
+    {"role": "user", "content": request.texto},
+    ]
+    
+    resumen_response_en = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resumen_en,
+        )
+
+    resumen_en = resumen_response_en["choices"][0]["message"]["content"].strip()
+    
     messages = [
         {"role": "system", "content": "Por favor, traduce el siguiente texto al inglés de forma clara y precisa, manteniendo el mismo texto pero solo traducido al ingles."},
         {"role": "user", "content": request.texto},
@@ -136,7 +178,7 @@ async def traducir_texto(request: TraducirRequest):
             else "Error en la respuesta de traducción."
         )
 
-        return {"resultado": content, "titles_en": titles_en}
+        return {"resultado": content, "titles_en": titles_en, "resumen_en": resumen_en}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
