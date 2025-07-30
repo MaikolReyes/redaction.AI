@@ -102,7 +102,12 @@ async def traducir_texto(request: TraducirRequest):
     titles_en = [
     {
         "role": "system",
-        "content": f"Traduce estas 3 opciones de títulos al inglés:\n{request.titulos}\n\nAsegúrate de que la traducción sea clara y precisa, manteniendo el mismo significado y tono de los títulos originales."
+        "content": 
+        f"""Traduce estas 3 opciones de títulos al inglés:
+        {request.titulos}
+        Devuelve solo las traducciones exactas de los títulos, sin texto adicional, sin encabezados ni espacios extra.
+        Solo listalos separados por saltos de línea.
+        """
     },
     {"role": "user", "content": request.texto},
     ]
