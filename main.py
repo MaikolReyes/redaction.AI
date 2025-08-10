@@ -20,6 +20,9 @@ class ReescribirRequest(BaseModel):
     texto: str
 class InstagramRequest(BaseModel):
     texto: str
+    
+class TwitterRequest(BaseModel):
+    texto: str
 class TraducirRequest(BaseModel):
     texto: str
     titulos: str
@@ -37,7 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+## Rewrite and Summary of Articles
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
     
@@ -142,7 +145,7 @@ async def resumir_instagram(request: InstagramRequest):
         "role": "system",
         "content": ( 
             ''' 
-            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo en ingles.
+            Apartir de esta noticia necesito que me crees un resumen para subir a instagram que sea llamativo y atrapante y que contenga emojis.
             '''
         )
     },
@@ -151,14 +154,44 @@ async def resumir_instagram(request: InstagramRequest):
     ]
     
     try:
-        resume_response = openai.ChatCompletion.create(
+        resume_response_ig = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=resume_ig,
         )
     
-        resume_ig = resume_response["choices"][0]["message"]["content"].strip()
+        resume_ig = resume_response_ig["choices"][0]["message"]["content"].strip()
     
         return {"resume_ig": resume_ig}
+
+    except Exception as e:
+        return {"error": f"Error en la API: {str(e)}"}
+    
+    ## Notice for Instagram
+@app.post("/resumeTwitter")
+async def resumir_twitter(request: TwitterRequest):
+    
+    resume_twitter= [
+    {
+        "role": "system",
+        "content": ( 
+            ''' 
+            Apartir de esta noticia necesito que crees un hilo para subir a twitter que sea llamativo y atrapante que no supere los 280 caracteres cada cada twet.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    
+    ]
+    
+    try:
+        resume_response_x = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resume_twitter,
+        )
+    
+        resume_twitter = resume_response_x["choices"][0]["message"]["content"].strip()
+    
+        return {"resume_twitter": resume_twitter}
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
