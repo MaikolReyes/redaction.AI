@@ -144,8 +144,8 @@ async def resumir_instagram(request: InstagramRequest):
     {
         "role": "system",
         "content": ( 
-            ''' 
-            Apartir de esta noticia necesito que me crees un resumen para subir a instagram que sea llamativo y atrapante y que contenga emojis.
+            f''' 
+            Apartir de esta noticia {request.texto} necesito que me crees un resumen para subir a instagram que sea llamativo y atrapante y que contenga emojis.
             '''
         )
     },
@@ -174,8 +174,8 @@ async def resumir_twitter(request: TwitterRequest):
     {
         "role": "system",
         "content": ( 
-            ''' 
-            Apartir de esta noticia necesito que crees un hilo para subir a twitter que sea llamativo y atrapante que no supere los 280 caracteres cada cada twet.
+            f'''
+            Apartir de esta noticia {request.texto} necesito que crees un hilo para subir a twitter que sea llamativo y atrapante que no supere los 280 caracteres cada cada twet.
             '''
         )
     },
