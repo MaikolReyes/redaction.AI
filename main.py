@@ -144,8 +144,11 @@ async def resumir_instagram(request: InstagramRequest):
     {
         "role": "system",
         "content": ( 
-            f''' 
-            Apartir de esta noticia {request.texto} necesito que me crees un resumen para subir a instagram que sea llamativo y atrapante y que contenga emojis.
+            '''
+            Eres un asistente experto en redacción creativa para redes sociales. 
+            A partir del texto proporcionado, crea un resumen breve, atractivo y llamativo para Instagram.
+            Debe contener emojis y un tono persuasivo. 
+            No pidas información adicional y no incluyas explicaciones.
             '''
         )
     },
@@ -174,8 +177,11 @@ async def resumir_twitter(request: TwitterRequest):
     {
         "role": "system",
         "content": ( 
-            f'''
-            Apartir de esta noticia {request.texto} necesito que crees un hilo para subir a twitter que sea llamativo y atrapante que no supere los 280 caracteres cada cada twet.
+            '''
+            Eres un experto en redacción para Twitter/X. 
+            A partir del texto proporcionado, crea un tweet breve, atractivo e impactante que no supere los 280 caracteres.
+            Debe captar la atención en los primeros segundos, incluir al menos un emoji y hasta 3 hashtags relevantes.
+            No pidas información adicional, no incluyas explicaciones y no uses enlaces.
             '''
         )
     },
