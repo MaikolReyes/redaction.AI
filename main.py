@@ -221,7 +221,7 @@ async def traducir_texto(request: TraducirRequest):
         Solo listalos separados por saltos de línea.
         """
     },
-    {"role": "user", "content": request.texto},
+    {"role": "user", "content": request.titulos},
     ]
     
     title_response = openai.ChatCompletion.create(
@@ -241,7 +241,7 @@ async def traducir_texto(request: TraducirRequest):
             """
         )
     },
-    {"role": "user", "content": request.texto},
+    {"role": "user", "content": request.resumen},
     ]
     
     resumen_response_en = openai.ChatCompletion.create(
