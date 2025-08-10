@@ -228,6 +228,8 @@ async def traducir_texto(request: TraducirRequest):
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
+
+
 # @app.post("/create-image")
 # async def crear_imagen(request: ImagenRequest):
 #     try:
