@@ -146,8 +146,9 @@ async def resumir_instagram(request: InstagramRequest):
         "content": ( 
             '''
             Eres un asistente experto en redacción creativa para redes sociales. 
-            A partir del texto proporcionado, crea un resumen breve, atractivo y llamativo para Instagram.
+            A partir del texto proporcionado, crea un resumen atractivo y llamativo para Instagram.
             Debe contener emojis y un tono persuasivo. 
+            
             No pidas información adicional y no incluyas explicaciones.
             '''
         )
@@ -179,8 +180,12 @@ async def resumir_twitter(request: TwitterRequest):
         "content": ( 
             '''
             Eres un experto en redacción para Twitter/X. 
-            A partir del texto proporcionado, crea un tweet breve, atractivo e impactante que no supere los 280 caracteres.
+            A partir del texto proporcionado, crea un hilo para twitter, atractivo e impactante que no supere los 280 caracteres por tweet.
+            
             Debe captar la atención en los primeros segundos, incluir al menos un emoji y hasta 3 hashtags relevantes.
+            
+            Cada hilo debe estar enumerado con un emoji de numero que comienze con 1️⃣ y continue con los siguientes numeros hasta el tweet numero 7.
+            
             No pidas información adicional, no incluyas explicaciones y no uses enlaces.
             '''
         )
