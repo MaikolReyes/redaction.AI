@@ -18,7 +18,8 @@ def read_root():
 
 class ReescribirRequest(BaseModel):
     texto: str
-
+class InstagramRequest(BaseModel):
+    texto: str
 class TraducirRequest(BaseModel):
     texto: str
 
@@ -89,7 +90,37 @@ async def reescribir_articulo(request: ReescribirRequest):
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
 
+## Notice for Instagram
+@app.post("/resumeIG")
+async def resumir_instagram(request: InstagramRequest):
+    
+    resume_ig = [
+    {
+        "role": "system",
+        "content": ( 
+            ''' 
+            Dame 3 opciones de titulos para este articulo, una opcion que sea llamativo, otro mas profesional y otro que sea breve pero descriptivo en ingles.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    
+    ]
+    
+    try:
+        resume_response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resume_ig,
+        )
+    
+        resume_ig = resume_response["choices"][0]["message"]["content"].strip()
+    
+        return {"resume_ig": resume_ig}
 
+    except Exception as e:
+        return {"error": f"Error en la API: {str(e)}"}
+
+## Traductor
 @app.post("/traducir")
 async def traducir_texto(request: TraducirRequest):
     
@@ -133,7 +164,6 @@ async def traducir_texto(request: TraducirRequest):
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
-    
 # @app.post("/create-image")
 # async def crear_imagen(request: ImagenRequest):
 #     try:
