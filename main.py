@@ -18,7 +18,11 @@ def read_root():
 
 class ReescribirRequest(BaseModel):
     texto: str
-
+class InstagramRequest(BaseModel):
+    texto: str
+    
+class TwitterRequest(BaseModel):
+    texto: str
 class TraducirRequest(BaseModel):
     texto: str
     titulos: str
@@ -36,7 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+## Rewrite and Summary of Articles
 @app.post("/reescribir")
 async def reescribir_articulo(request: ReescribirRequest):
     
@@ -150,7 +154,78 @@ El artículo reescrito debe tener 0% de similitud textual con el original, ser p
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
 
+## Notice for Instagram
+@app.post("/resumeIG")
+async def resumir_instagram(request: InstagramRequest):
+    
+    resume_ig = [
+    {
+        "role": "system",
+        "content": ( 
+            '''
+            Eres un asistente experto en redacción creativa para redes sociales. 
+            A partir del texto proporcionado, crea un resumen atractivo y llamativo para Instagram.
+            Debe contener emojis y un tono persuasivo. 
+            
+            No pidas información adicional y no incluyas explicaciones.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    
+    ]
+    
+    try:
+        resume_response_ig = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resume_ig,
+        )
+    
+        resume_ig = resume_response_ig["choices"][0]["message"]["content"].strip()
+    
+        return {"resume_ig": resume_ig}
 
+    except Exception as e:
+        return {"error": f"Error en la API: {str(e)}"}
+    
+    ## Notice for Instagram
+@app.post("/resumeTwitter")
+async def resumir_twitter(request: TwitterRequest):
+    
+    resume_twitter= [
+    {
+        "role": "system",
+        "content": ( 
+            '''
+            Eres un experto en redacción para Twitter/X. 
+            A partir del texto proporcionado, crea un hilo para twitter, atractivo e impactante que no supere los 280 caracteres por tweet.
+            
+            Debe captar la atención en los primeros segundos, incluir al menos un emoji y hasta 3 hashtags relevantes.
+            
+            Cada hilo debe estar enumerado con un emoji de numero que comienze con 1️⃣ y continue con los siguientes numeros hasta el tweet numero 7.
+            
+            No pidas información adicional, no incluyas explicaciones y no uses enlaces.
+            '''
+        )
+    },
+    {"role": "user", "content": request.texto},
+    
+    ]
+    
+    try:
+        resume_response_x = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=resume_twitter,
+        )
+    
+        resume_twitter = resume_response_x["choices"][0]["message"]["content"].strip()
+    
+        return {"resume_twitter": resume_twitter}
+
+    except Exception as e:
+        return {"error": f"Error en la API: {str(e)}"}
+
+## Traductor
 @app.post("/traducir")
 async def traducir_texto(request: TraducirRequest):
     
@@ -164,7 +239,7 @@ async def traducir_texto(request: TraducirRequest):
         Solo listalos separados por saltos de línea.
         """
     },
-    {"role": "user", "content": request.texto},
+    {"role": "user", "content": request.titulos},
     ]
     
     title_response = openai.ChatCompletion.create(
@@ -184,7 +259,7 @@ async def traducir_texto(request: TraducirRequest):
             """
         )
     },
-    {"role": "user", "content": request.texto},
+    {"role": "user", "content": request.resumen},
     ]
     
     resumen_response_en = openai.ChatCompletion.create(
@@ -215,7 +290,8 @@ async def traducir_texto(request: TraducirRequest):
 
     except Exception as e:
         return {"error": f"Error en la API: {str(e)}"}
-    
+
+
 # @app.post("/create-image")
 # async def crear_imagen(request: ImagenRequest):
 #     try:
