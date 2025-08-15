@@ -96,41 +96,23 @@ async def reescribir_articulo(request: ReescribirRequest):
             "role": "system",
             "content": (
             """
-Reescribí completamente el siguiente artículo desde cero, sin conservar ninguna frase, estructura ni orden original.
-
-El nuevo texto debe estar diseñado para ser publicado en Financessignal, un sitio web de noticias financieras que cubre temas como criptomonedas, economía, finanzas y tecnología.
-
-✅ Público objetivo:
-Consumidores generales interesados en noticias financieras.
-
-✅ Tono:
-Formal, técnico y persuasivo.
-
-✅ Estilo editorial:
-Profesional, con enfoque analítico y profundidad conceptual.
-
-🔧 Instrucciones específicas:
-- Conservá los hechos clave del artículo original, pero reorganizá la narrativa y cambiá el enfoque para hacerlo único.
-- Reformulá todas las ideas con vocabulario distinto, evitando cualquier frase idéntica o estructura similar.
-- No copies citas textuales ni fragmentos del artículo original. Parafraseá todo con estilo propio.
-- Añadí valor con contenido nuevo: contexto adicional, implicancias estratégicas, ejemplos, comparaciones internacionales, o referencias a tendencias actuales.
-- Estructurá el artículo en secciones claras y bien definidas, como:
-- Introducción
-- Contexto del problema
-- Análisis del impacto
-- Opiniones del sector
-- Oportunidades para inversores
-- Riesgos latentes
-- Conclusión estratégica
-- Optimizá el contenido para SEO:
-- Incluí palabras clave relevantes relacionadas con el tema.
-- Generá un título atractivo y optimizado para buscadores.
-- Redactá una metadescripción de máximo 160 caracteres.
-- Sugerí 3–5 palabras clave principales.
-- Proponé enlaces internos (a otras notas de Financessignal) y externos (a fuentes confiables).
-
-🎯 Objetivo final:
-El artículo reescrito debe tener 0% de similitud textual con el original, ser percibido como contenido único y de alta calidad editorial, y estar listo para publicación en Financessignal.
+            Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas,
+                mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes 
+                que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario
+                y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). No menciones que se trata de una reescritura o menciones fuentes de informacion.
+                No incluyas encabezados ni títulos, solo el texto reescrito. asegurate que el texto sea completamente original y no se parezca al original. para que google no lo tome como contenido duplicado o contenido de bajo valor.
+                
+                Al final del articulo necesito que agregues siempre la siguiente estructura:
+                
+                Análisis FinanceSignal
+                
+                Resumen del impacto: donde expliques el impacto de la noticia en el mercado financiero.
+                
+                Oportunidades para inversores: donde expliques las oportunidades que esta noticia puede generar para los inversores.
+                
+                Riesgos latentes: donde expliques los riesgos que esta noticia puede generar para los inversores.
+                
+                Conclusión: donde expliques la conclusión de la noticia y como afecta al mercado financiero.
                 """
             ),
         },
