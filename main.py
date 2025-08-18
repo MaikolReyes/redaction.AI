@@ -74,8 +74,7 @@ async def reescribir_articulo(request: ReescribirRequest):
         "role": "system",
         "content": ( 
             f"""A partir del siguiente artículo de noticias {request.texto}, generá 5 puntos resumiendo la noticia con los puntos mas importantes.
-            Devuelve solo los puntos, sin texto adicional, sin encabezados ni espacios extra.
-            Solo listalos separados por saltos de línea.
+            Devuelve solo los puntos, sin texto adicional, sin encabezados ni espacios extra. Solo listalos separados por saltos de línea.
             Asegurate de que los puntos sean claros, concisos y reflejen los aspectos más relevantes de la noticia.
             No incluyas opiniones o juicios de valor, solo hechos y datos objetivos.
             """
@@ -96,24 +95,41 @@ async def reescribir_articulo(request: ReescribirRequest):
             "role": "system",
             "content": (
             """
-            Tu tarea es reescribir completamente el siguiente artículo de forma creativa, clara y original, manteniendo los puntos clave y el mensaje central. No solo cambies palabras: reorganiza ideas,
-                mejora la redacción y estructura el contenido para hacerlo más útil, profundo y atractivo para el lector. Añadí ejemplos nuevos, explicaciones adicionales, preguntas frecuentes, comparaciones o consejos prácticos relevantes 
-                que no estén en el texto original. Evitá repetir frases hechas o fórmulas comunes. El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario
-                y cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). No menciones que se trata de una reescritura o menciones fuentes de informacion.
-                No incluyas encabezados ni títulos, solo el texto reescrito. asegurate que el texto sea completamente original y no se parezca al original. para que google no lo tome como contenido duplicado o contenido de bajo valor.
-                
-                Al final del articulo necesito que agregues siempre la siguiente estructura:
-                
-                Análisis FinanceSignal
-                
-                Resumen del impacto: donde expliques el impacto de la noticia en el mercado financiero.
-                
-                Oportunidades para inversores: donde expliques las oportunidades que esta noticia puede generar para los inversores.
-                
-                Riesgos latentes: donde expliques los riesgos que esta noticia puede generar para los inversores.
-                
-                Conclusión: donde expliques la conclusión de la noticia y como afecta al mercado financiero.
-                """
+            Tu tarea como periodista profesional con mas de 20 años de experiencia en el ambito financiero y economico es reescribir completamente el siguiente artículo de forma creativa, clara y 
+            original, es muy importante que tenga 0% de similitud con el articulo original. No solo cambies palabras: reorganiza la estructura, usa sinónimos, varía el orden de los párrafos, cambia los 
+            títulos y subtítulos, y agrega ejemplos, contexto adicional o comparaciones relevantes. El tono debe ser periodístico, claro y profesional. Añadí ejemplos nuevos, explicaciones adicionales, 
+            preguntas frecuentes, comparaciones o consejos prácticos relevantes que no estén en el texto original. 
+            
+            Evitá repetir frases hechas o fórmulas comunes. El resultado debe ser un artículo que se sienta escrito por una persona experta, sea valioso para el usuario y no se parezca en ningun punto con 
+            el articulo original.
+            
+            Es de caracter obligatorio que cumpla con los estándares de calidad de contenido de Google (E-E-A-T: experiencia, conocimiento, autoridad y confiabilidad). asegurate que el texto sea 
+            completamente original y no se parezca al original. para que google no lo tome como contenido duplicado o contenido de bajo valor.
+            
+            Además de generar el contenido, incluye sugerencias de hipervínculos a fuentes confiables. Los links deben estar integrados de forma natural en el cuerpo del texto, en formato markdown.
+            
+            Si es sobre finanzas o economía, usa medios de referencia como Bloomberg, Reuters, Financial Times, Banco Mundial, FMI o informes de bancos centrales.
+            
+            Si es sobre criptomonedas, incluye fuentes como CoinDesk, CoinTelegraph, Quiver Quantitative, Grayscale, BlackRock, SEC o páginas oficiales de exchanges y ETFs.
+            
+            Si es sobre tecnología, enlaza a medios como TechCrunch, The Verge, Wired, MIT Technology Review o páginas oficiales de las empresas mencionadas.
+            
+            Añade al menos 3 enlaces externos de alta autoridad y 1–2 enlaces internos mi sitio web es financessignal.com (coloca un placeholder como [LINK INTERNO] donde yo pueda agregar la URL de mi 
+            sitio). Si no encontrás un enlace específico, coloca un marcador [FUENTE] para que yo lo complete después.
+            
+            Al final del articulo necesito que agregues siempre la siguiente estructura:
+            
+            Análisis FinanceSignal
+            
+            Resumen del impacto: donde expliques el impacto de la noticia en el mercado financiero.
+            
+            Oportunidades para inversores: donde expliques las oportunidades que esta noticia puede generar para los inversores.
+            
+            Riesgos latentes: donde expliques los riesgos que esta noticia puede generar para los inversores.
+            
+            Conclusión: donde expliques la conclusión de la noticia y como afecta al mercado financiero.
+            
+            """
             ),
         },
         {"role": "user", "content": request.texto},
@@ -121,7 +137,7 @@ async def reescribir_articulo(request: ReescribirRequest):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-5",
             messages=messages,
         )
 
